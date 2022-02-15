@@ -1,10 +1,10 @@
 package neu.jia.assignment02.question02;
 
 public class Shape {
-    private String name;
-    private String color;
-    private double area;
-    private double perimeter;
+    protected String name;
+    protected String color;
+    protected double area;
+    protected double perimeter;
 
     public Shape(String name, String color) {
         this.name = name;

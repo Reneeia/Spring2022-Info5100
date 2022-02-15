@@ -12,6 +12,7 @@ public class Triangle extends Shape {
     }
 
     public Triangle(double side) {
+        this.name = "Triangle";
         this.base = side;
         this.height = (Math.sqrt(3) / 2.0) * base;
     }

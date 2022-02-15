@@ -7,23 +7,25 @@ public class Rhombus extends Shape {
 
 
     public Rhombus(double d1, double d2) {
+        this.name = "Rhombus";
         this.diagonal1 = d1;
         this.diagonal2 = d2;
     }
 
     public Rhombus(double d1) {
+        this.name = "Rhombus";
         this.diagonal1 = d1;
+        this.diagonal2 = d1;
     }
 
     @Override
     public double getArea() {
-        double height = (Math.sqrt(3) / 2.0) * diagonal1;
-        return diagonal1 * height;
+        return (diagonal1 * diagonal2) / 2;
     }
 
     @Override
     public double getPerimeter() {
-        return diagonal1 * 2 + diagonal2 * 2;
+        return (Math.sqrt(diagonal1 * diagonal1 + diagonal2 * diagonal2)) * 2;
     }
 
 }
