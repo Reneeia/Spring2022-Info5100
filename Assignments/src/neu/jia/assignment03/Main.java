@@ -40,6 +40,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        //Publish the message again
         seattlePolice.notifyCitizens("Amber Alert 001 has been canceled.");
     }
 }
