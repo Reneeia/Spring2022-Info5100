@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Student sampleStudent = new Student();
         // shallow copy
-        Student shallowCpy = sampleStudent;
+        Student shallowCopy = sampleStudent;
         // deep copy
         Student deepCopy = new Student(sampleStudent);
 
@@ -14,7 +14,7 @@ public class Main {
         sampleStudent.setGpa(3.0);
 
         System.out.println("Original GPA: " + sampleStudent.getGpa());
-        System.out.println("Shallow Copy GPA (same as original): " + shallowCpy.getGpa());
+        System.out.println("Shallow Copy GPA (same as original): " + shallowCopy.getGpa());
         System.out.println("DeepCopy GPA (should not change): " + deepCopy.getGpa());
     }
 }
