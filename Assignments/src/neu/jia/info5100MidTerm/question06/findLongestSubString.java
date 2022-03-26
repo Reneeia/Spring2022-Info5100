@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class findLongestSubString {
-    public int lengthOfLongestSubstring(String s) {
+    public int findLongestSubString(String s) {
         Map<Character, Integer> lastOccurredCheck = new HashMap<>();
         
         //pointers
