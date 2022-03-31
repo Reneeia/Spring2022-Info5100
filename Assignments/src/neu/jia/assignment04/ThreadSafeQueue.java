@@ -26,7 +26,7 @@ public class ThreadSafeQueue<T> {
 
     public T peek() {
         synchronized (objLock) {
-            return threadSafeQueue.remove();
+            return threadSafeQueue.peek();
         }
     }
 
