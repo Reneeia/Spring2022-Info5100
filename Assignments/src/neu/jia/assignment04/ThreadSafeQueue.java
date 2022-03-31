@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class ThreadSafeQueue<T> {
     private Queue<T> threadSafeQueue;
-    public Object objLock = new Object();
+    private Object objLock = new Object();
 
     //constructor
     public ThreadSafeQueue() {
@@ -14,13 +14,13 @@ public class ThreadSafeQueue<T> {
 
     public void add(T data) {
         synchronized (objLock) {
-            threadSafeQueue.add(data);
+            threadSafeQueue.offer(data);
         }
     }
 
     public T remove() {
         synchronized (objLock) {
-            return threadSafeQueue.remove();
+            return threadSafeQueue.poll();
         }
     }
 
@@ -32,7 +32,17 @@ public class ThreadSafeQueue<T> {
 
     public boolean isEmpty() {
         synchronized (objLock) {
-            return threadSafeQueue.peek() == null;
+            return threadSafeQueue.size() == 0;
         }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(T s : threadSafeQueue){
+            sb.append(s);
+            sb.append("->");
+        }
+        return sb.toString();
     }
 }
