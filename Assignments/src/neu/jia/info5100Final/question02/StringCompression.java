@@ -1,66 +1,93 @@
 package neu.jia.info5100Final.question02;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StringCompression {
     public String compressString(String str) {
-        //base case
-        if (str == null || str.length() <= 1) {
-            return str;
-        }
+        if(str == null || str == "") return str;
+        Map<Integer, Integer> countMap = getCountMap(str); //<end_idx, num>
+        int newSize = getNewSize(countMap);
+        char[] inputArr = getPaddedInput(str, newSize);
+        return compressString(str, inputArr, countMap, str.length(), newSize);
+    }
 
-        //covert string into char array
-        char[] chars = str.toCharArray();
-
-        int l = 0;
-        int r = 0;
-        int start = r;
-        while (r < chars.length) {
-            if (chars[r] == chars[start]) {
-                r++;
-            } else {
-                // convert counter to char and fill it in
-                l = fillChar(l, start, r, chars);
-                chars[l] = chars[r];
-                start = r;
+    private String compressString(String input, char[] inputArr, Map<Integer, Integer> countMap, int originLen, int newLen) {
+        int slow = newLen - 1;
+        int fast = originLen - 1;
+        for (; fast >= 0; fast--) {
+            if (countMap.containsKey(fast)) {
+                char charVal = inputArr[fast];
+                slow = compressCharToNumber(slow, inputArr, countMap.get(fast));
+                inputArr[slow--] = input.charAt(fast);
             }
         }
-        // post-processing
-        if (chars[start] == chars[r - 1]) {
-            l = fillChar(l, start, r, chars);
-        }
-        return new String(chars, 0, l);
+        if(newLen >= input.length()) return input;
+        return new String(inputArr, 0, newLen);
     }
 
-    private int fillChar(int l, int start, int r, char[] chars) {
-        int counter = r - start;
-        if (counter == 1) {
-            l++;
-            return l;
+    private int compressCharToNumber(int start, char[] input, int targetNum) {
+        // 234 --> '234'
+        //            s
+        StringBuilder sb = new StringBuilder();
+        while (targetNum != 0) {
+            sb.append(targetNum % 10);
+            targetNum /= 10;
         }
-        int curDig;
-        l++;
-        int lStart = l;
-        while (counter / 10 != 0) {
-            curDig = '0' + counter % 10;
-            chars[l] = (char) curDig;
-            l++;
-            counter = counter / 10;
+        // sb = '432'
+        for (int i = 0; i < sb.length(); i++) {
+            input[start - i] = sb.charAt(i);
         }
-        curDig = '0' + counter % 10;
-        chars[l] = (char) curDig;
-        int lEnd = l;
-        while (lStart < lEnd) {
-            swap(chars, lStart, lEnd);
-            lStart++;
-            lEnd--;
-        }
-
-        l++;
-        return l;
+        return start - sb.length();
     }
 
-    private void swap(char[] chars, int l, int r) {
-        char temp = chars[l];
-        chars[l] = chars[r];
-        chars[r] = temp;
+
+    private char[] getPaddedInput(String input, int newSize) {
+        int delta = newSize - input.length();
+        char[] res;
+        if (delta > 0) {
+            res = new char[newSize];
+        } else {
+            res = new char[input.length()];
+        }
+        for (int i = 0; i < input.length(); i++) {
+            res[i] = input.charAt(i);
+        }
+        return res;
+    }
+
+    private int getNewSize(Map<Integer, Integer> countMap) {
+        int res = countMap.size();
+        for (Integer value : countMap.values()) {
+            int count = 0;
+            while (value != 0) {
+                value /= 10;
+                count++;
+            }
+            res += count;
+        }
+        return res;
+    }
+
+    private Map<Integer, Integer> getCountMap(String input) {
+        Map<Integer, Integer> res = new HashMap<>();
+        /*
+            abbcccdeee
+                  f
+                 s
+         */
+        int slow = 0;
+        int count = 1;
+        for (int fast = 1; fast < input.length(); fast++) {
+            if (input.charAt(fast) != input.charAt(slow)) {
+                slow += count;
+                res.put(slow - 1, count);
+                count = 1; // reset count
+            } else {
+                count++;
+            }
+        }
+        res.put(input.length() - 1, count);
+        return res;
     }
 }
